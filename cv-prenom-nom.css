@@ -10,7 +10,6 @@ header {
     background: beige;
   }
   .contenor-intro {
-
     width: auto;
     height: auto;
     justify-content: space-evenly;
@@ -32,6 +31,7 @@ header {
   }
   .container-ob-ab {
     display: flex;
+    flex-wrap: nowrap;
 
   }
   .container-about-me {
@@ -42,7 +42,6 @@ header {
     align-items: baseline;
     justify-content: center;
     align-content: stretch;
-    flex-wrap: nowrap;
     flex-direction: column-reverse;
 
   }

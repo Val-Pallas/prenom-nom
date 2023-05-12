@@ -20,7 +20,7 @@ header {
   .container-intro {
     display: flex;
     width: 500px;
-    height: 500x;
+    height: 500px;
     background: chocolate;
     display: -webkit-inline-box;
   }
@@ -47,6 +47,7 @@ header {
   }
   .content-Ex-Fo {
     display: flex;
+    content: normal;
   }
   .container-exp-for {
     display: flex;
@@ -58,13 +59,22 @@ header {
     flex-direction: row;
 
   }
+  .container-exp-for1 {
+    display: flex;
+    background: rgb(168, 160, 196);
+    align-content: stretch;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+
+  }
   p {
     width: 50%; /* == 400px * .5 = 200px */
     height: 25%; /* == 160px * .25 = 40px */
     margin: 5%; /* == 400px * .05 = 20px */
     padding: 5%; /* == 400px * .05 = 20px */
     background: cyan;
-    padding: auto;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: rgb(128, 128, 128);
   }

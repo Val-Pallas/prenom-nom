@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module Connexionw</title>
     <link href="/media/examples/link-element-example.css" rel="stylesheet">
+    <button id="drawButton">Draw</button>
+    <div id="drawResult"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <?php
@@ -21,10 +24,9 @@ if (isset($_GET["message"])) {
 
 <body>
     <nav>
-        <img src="/PageDaAccueil/abeille.png" alt="imagen abeille jeune et noir" width="10%">
-
         <div id="center_button"><button onclick="location.href='connexion.php'">Log in</button></div>
         <div id="center_button"><button onclick="location.href='inscription.php'">Inscription</button></div>
+        <div id="center_button"><button onclick="location.href='profil.php'">Profil</button></div>
 
     </nav>
     <h2>Abeilles</h2>
@@ -37,7 +39,22 @@ if (isset($_GET["message"])) {
 
         Les abeilles jouent un rôle crucial dans la pollinisation des plantes, ce qui contribue à la reproduction des fleurs et à la production de fruits et de graines. Leur activité pollinisatrice est vitale pour maintenir l'équilibre de nombreux écosystèmes et soutenir la biodiversité.
     </p>
+    <button id="drawButton">Draw</button>
+    <div id="drawResult"></div>
 
+    <script>
+        $(document).ready(function() {
+            $('#drawButton').click(function() {
+                $.ajax({
+                    url: '/draw',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#drawResult').text(response.result);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

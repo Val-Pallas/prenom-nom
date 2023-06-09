@@ -19,31 +19,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
     $login = $_POST["login"];
     $motDePasse = $_POST["password"];
+}
+// Vérifier si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
+    $login = $_POST["login"];
+    $motDePasse = $_POST["password"];
 
     // Vérifier les informations de connexion dans la base de données
-    $requete = "SELECT * FROM utilisateurs WHERE login = '.$login.'";
+    $requete = "SELECT * FROM utilisateurs WHERE login = '$login'";
     $resultat = mysqli_query($connexion, $requete);
-    var_dump($resultat);
-    if ($resultat && mysqli_num_rows($resultat) > 0) {
-        $utilisateur = mysqli_fetch_assoc($resultat);
-        if (password_verify($motDePasse, $utilisateur["password"])) {
-            // Les informations de connexion sont correctes, créer les variables de session
-            $_SESSION["utilisateur_id"] = $utilisateur["id"];
-            $_SESSION["utilisateur_login"] = $utilisateur["login"];
 
-            // Rediriger vers la page d'accueil ou toute autre page appropriée
-            header("Location: index.php");
-            exit();
+    if ($resultat) {
+        if (mysqli_num_rows($resultat) > 0) {
+            $utilisateur = mysqli_fetch_assoc($resultat);
+            if (password_verify($motDePasse, $utilisateur["password"])) {
+                // Les informations de connexion sont correctes, créer les variables de session
+                $_SESSION["utilisateur_id"] = $utilisateur["id"];
+                $_SESSION["utilisateur_login"] = $utilisateur["login"];
+
+                // Rediriger vers la page d'accueil ou toute autre page appropriée
+                header("Location: index.php");
+                exit();
+            } else {
+                echo "Login ou mot de passe incorrect.";
+            }
         } else {
-            echo "Mot de passe incorrect.";
+            echo "Aucun utilisateur trouvé avec ce login.";
         }
     } else {
-        echo "Utilisateur non trouvé.";
+        echo "Erreur de requête: " . mysqli_error($connexion);
     }
+}
+
+
+
 
     // Fermer la connexion à la base de données
     mysqli_close($connexion);
-}
+
 ?>
 
 <!DOCTYPE html>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Module Connexionw</title>
     <link href="/media/examples/link-element-example.css" rel="stylesheet">
-    
+
 </head>
 <?php
 // Vérifier si un message a été passé en paramètre d'URL

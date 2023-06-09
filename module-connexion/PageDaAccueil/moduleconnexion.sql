@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : mer. 07 juin 2023 à 07:45
+-- Généré le : jeu. 08 juin 2023 à 13:28
 -- Version du serveur : 5.7.39
 -- Version de PHP : 7.4.33
 
@@ -40,11 +40,29 @@ CREATE TABLE `utilisateurs` (
 --
 
 INSERT INTO `utilisateurs` (`id`, `login`, `prenom`, `nom`, `password`) VALUES
-(1, 'admin', 'admin', 'admin', 'admin');
-COMMIT;
+(1, 'admin', 'admin', 'admin', 'admin'),
+(3, 'admin', 'admin', 'admin', 'admin'),
+(4, 'valeria', 'valeria', 'valeria', 'valeria');
 
-INSERT INTO `utilisateurs` (`id`, `login`, `prenom`, `nom`, `password`) VALUES
-(2, 'valeria.pallas@laplateforme.io', 'Valeria', 'Pallas', '123456');
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

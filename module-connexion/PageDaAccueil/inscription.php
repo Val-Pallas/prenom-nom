@@ -18,8 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST["login"];
     $prenom = $_POST["prenom"];
     $nom = $_POST["nom"];
-    $motDePasse = $_POST["password"];
+    $password = $_POST["password"];
     $confirmationMotDePasse = $_POST["confirmation_mot_de_passe"];
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+   
 
     // Vérifier si les mots de passe correspondent
     if ($motDePasse == $confirmationMotDePasse) {

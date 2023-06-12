@@ -1,87 +1,137 @@
 <?php
-session_start();
+session_start(); //Session connect
+$bdd = mysqli_connect("localhost", "root", "", "moduleconnexion"); // Connexion database...
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION["utilisateur_id"])) {
-    // Rediriger vers la page de connexion ou toute autre page appropriée
-    header("Location: connexion.php");
-    exit();
-}
+if (isset($_SESSION["id"])) {
+    if (isset($_POST['newlogin']) and !empty($_POST['newlogin'])) {
+        $newlogin = htmlspecialchars($_POST["newlogin"]);
 
-// Connexion à la base de données
-$serveur = "localhost";
-$utilisateur = "root";
-$motDePasse = "root";
-$baseDeDonnees = "moduleconnexion";
-
-$connexion = mysqli_connect($serveur, $utilisateur, $motDePasse, $baseDeDonnees);
-
-// Vérifier la connexion à la base de données
-if (!$connexion) {
-    die("La connexion à la base de données a échoué: " . mysqli_connect_error());
-}
-
-// Récupérer les informations de l'utilisateur à partir de la base de données
-$utilisateurId = $_SESSION["utilisateur_id"];
-$requete = "SELECT * FROM utilisateurs WHERE id = $utilisateurId";
-$resultat = mysqli_query($connexion, $requete);
-
-if ($resultat && mysqli_num_rows($resultat) > 0) {
-    $utilisateur = mysqli_fetch_assoc($resultat);
-} else {
-    echo "Utilisateur non trouvé.";
-    exit();
-}
-
-// Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les nouvelles données du formulaire
-    $login = $_POST["login"];
-    $prenom = $_POST["prenom"];
-    $nom = $_POST["nom"];
-    $motDePasse = $_POST["password"];
-
-    // Mettre à jour les informations de l'utilisateur dans la base de données
-    $requete = "UPDATE utilisateurs SET login = '$login', prenom = '$prenom', nom = '$nom', password = '$motDePasse' WHERE id = $utilisateurId";
-
-    if (mysqli_query($connexion, $requete)) {
-        echo "Les informations ont été mises à jour avec succès.";
-        // Mettre à jour les variables de session si nécessaire
-        $_SESSION["utilisateur_login"] = $login;
-    } else {
-        echo "Erreur lors de la mise à jour des informations : " . mysqli_error($connexion);
+        $sql = "UPDATE utilisateurs SET login = '$newlogin' WHERE id = '" . $_SESSION["id"] . "'"; //Update login from the database with the new login
+        $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+        header('Location: deconnexion.php');
     }
+
+    if (isset($_POST['newprenom']) and !empty($_POST['newprenom'])) {  //Update prenom from the database whith the new prenom
+        $newprenom = htmlspecialchars($_POST["newprenom"]);
+
+        $sql = "UPDATE utilisateurs SET prenom = '$newprenom' WHERE id = '" . $_SESSION["id"] . "'";
+        $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+        header('Location:deconnexion.php');
+    }
+
+    if (isset($_POST['newnom']) and !empty($_POST['newnom'])) { //Update nom from the database whith the new nom
+        $newnom = htmlspecialchars($_POST["newnom"]);
+
+        $sql = "UPDATE utilisateurs SET nom = '$newnom' WHERE id = '" . $_SESSION["id"] . "'";
+        $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+        header('Location:deconnexion.php');
+    }
+    if (isset($_POST['newpassword']) and !empty($_POST['newpassword'])) {  //Update password from the database whith the new password
+        $newpassword = htmlspecialchars($_POST["newpassword"]);
+        $newpassword2 = password_hash($newpassword, PASSWORD_BCRYPT, array('cost' => 10));
+
+        $sql = "UPDATE utilisateurs SET password = '$newpassword2' WHERE id = '" . $_SESSION["id"] . "'";
+        $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+        header('Location: deconnexion.php');
+    }
+
+    $sql = "SELECT * FROM utilisateurs WHERE id = '" . $_SESSION["id"] . "'";  // Recovery User session ...
+    $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+    $userinfo = mysqli_fetch_array($result);
+
+    mysqli_close($bdd);
 }
 
-// Fermer la connexion à la base de données
-mysqli_close($connexion);
 ?>
 
+<!-- Debut page display -->
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/profil.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
 </head>
+
 <body>
-    <h2>Profil</h2>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="login">Login :</label>
-        <input type="text" id="login" name="login" value="<?php echo $utilisateur["login"]; ?>" required><br><br>
+    <header>
+        <nav>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="profil.php?id=" <?php $_SESSION['id'] ?>>Profil</a>
+            <?php
+            } else { ?><a href='inscription.php'>Inscription</a><?php } ?>
 
-        <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" value="<?php echo $utilisateur["prenom"]; ?>" required><br><br>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="deconnexion.php">Deconnexion</a>
+            <?php } else { ?>
+                <a href="connexion.php">Connexion</a>
+            <?php } ?>
+            <?php if ($userinfo["login"] == "admin") {
+                echo "<a href='admin.php'>Admin</a>";
+            }
+                ?>
 
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" value="<?php echo $utilisateur["nom"]; ?>" required><br><br>
+        </nav>
+    </header>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required><br><br>
+    <main>
+        <article>
+            <h1> Bienvenue <span><?php echo $userinfo["login"] . ' ' . "!"; ?></span> </h1>
+            <h2>Tu peux modifier ton profil ici avec les champs deja pré-remplie ...</h2>
+            <section>
+                <!--Debut form -->
+                <form method="post" action="">
+                    <fieldset>
+                        <div class="formflex">
+                            <div>
+                                <label for="login">login</label>
+                                <input type="text" name="newlogin" id="login" placeholder="votre login" value="<?php echo $userinfo["login"]; ?>">
+                            </div>
+                            <div>
+                                <label for="prenom">Prenom</label>
+                                <input type="text" name="newprenom" id="prenom" placeholder="Votre prenom" value="<?php echo $userinfo["prenom"]; ?>">
+                            </div>
+                            <div>
+                                <label for="nom">Nom</label>
+                                <input type="text" name="newnom" id="nom" placeholder="Votre nom" value="<?php echo $userinfo["nom"]; ?>">
+                            </div>
+                            <div>
+                                <label for="password">Mot de passe</label>
+                                <input type="password" name="newpassword" id="password" placeholder="Votre mot de passe">
+                            </div>
+                            <input type="submit" name="submit" value="Modifie ton profil et retourne vers l'accueil">
+                        </div>
+                    </fieldset>
 
-<label for="confirmation_mot_de_passe">Confirmer le mot de passe :</label>
-<input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" required><br><br>
+                </form>
+                <!--End form -->
+            </section>
+            <section class="ghiblistory">
+                <h3>Le studio Ghibli aura son propre parc d’attractions dès 2022 !</h3>
+                <h4>Un premier aperçu en a été dévoilé sous la forme d’illustrations inspirées.</h4>
+                <p>Ceux qui ont toujours préféré l’univers poético-nippon du studio Ghibli aux romances de Disney verront
+                    « bientôt » leur patience récompensée : le mythique studio d’animation japonais, parent de films tels
+                    que Le voyage de Chihiro, Princesse Mononoké ou encore Le château ambulant, aura bel et bien son parc thématique,
+                    , qui devrait ouvrir à l’horizon 2022 d’après la préfecture d’Aichi.
+                    C’est sur le site de l’exposition internationale de 2005, à Nagakute, que se dressera la réserve d’esprits Ghibli,
+                    qui n’aura manifestement rien à envier à son musée déjà existant à Tokyo, à en croire une série d’illustrations
+                    divulguant les plans du parc.
+                </p>
+                <section class="monoke-container">
+                    <img src="../images/ima1.jpeg" alt="monoke">
+                    <img src="../images/ima2.jpeg" alt="monoke">
+                    <img src="../images/ima3.jpeg" alt="monoke">
+                </section>
+            </section>
+        </article>
+    </main>
+    <footer>
+    </footer>
 
-<input type="submit" value="Modifier">
-</form>
 </body>
+
 </html>
 
+<!--End page display -->

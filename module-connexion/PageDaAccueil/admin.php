@@ -1,47 +1,87 @@
 <?php
-session_start();
-// Vérifier si l'utilisateur est connecté et s'il est l'admin
-if (!isset($_SESSION["utilisateur_id"]) || $_SESSION["utilisateur_login"] !== "admin") {
-    // Rediriger vers la page de connexion ou toute autre page appropriée
-    header("Location: connexion.php");
-    exit();
-}
-
-// Connexion à la base de données
-$serveur = "localhost";
-$utilisateur = "root";
-$motDePasse = "root";
-$baseDeDonnees = "moduleconnexion";
-
-$connexion = mysqli_connect($serveur, $utilisateur, $motDePasse, $baseDeDonnees);
-
-// Vérifier la connexion à la base de données
-if (!$connexion) {
-    die("La connexion à la base de données a échoué: " . mysqli_connect_error());
-}
-
-// Récupérer toutes les informations des utilisateurs dans la base de données
-$requete = "SELECT * FROM utilisateurs WHERE id = '" . $_SESSION["id"] . "'";
-$resultat = mysqli_query($connexion, $requete);
-
-if ($resultat && mysqli_num_rows($resultat) > 0) {
-    // Afficher les informations des utilisateurs
-    echo "<h2>Liste des utilisateurs :</h2>";
-    echo "<table>";
-    echo "<tr><th>ID</th><th>Login</th><th>Prénom</th><th>Nom</th></tr>";
-    while ($utilisateur = mysqli_fetch_assoc($resultat)) {
-        echo "<tr>";
-        echo "<td>".$utilisateur["id"]."</td>";
-        echo "<td>".$utilisateur["login"]."</td>";
-        echo "<td>".$utilisateur["prenom"]."</td>";
-        echo "<td>".$utilisateur["nom"]."</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} else {
-    echo "Aucun utilisateur trouvé.";
-}
-
-// Fermer la connexion à la base de données
-mysqli_close($connexion);
+session_start(); // Session connexion ...
+$bdd = mysqli_connect("localhost", "root", "", "moduleconnexion"); // Connexion database...
 ?>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/admin.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="admin.php?id=" <?php $_SESSION['id'] ?>>Admin</a>
+                <a href="profil.php?id=" <?php $_SESSION['id'] ?>>Profil</a>
+            <?php
+            } else { ?><a href="inscription.php">Inscription</a><?php } ?>
+
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="deconnexion.php">Deconnexion</a>
+            <?php } else { ?>
+                <a href="connexion.php">Connexion</a>
+            <?php } ?>
+        </nav>
+
+        <?php
+        $sql = "SELECT * FROM utilisateurs WHERE id = '" . $_SESSION["id"] . "'";  // Recovery User session ...
+        $result = mysqli_query($bdd, $sql) or die(mysqli_error($bdd));
+        $userinfo = mysqli_fetch_array($result);
+        ?>
+    </header>
+    <main>
+        <section>
+            <h1> Bienvenue <?php echo $_SESSION["login"]; ?> ! </h1>
+            <h2>Ci-dessous la liste de vos utilisateurs et leur données ...</h2>
+            <p>*Strictement confidentiel.</p>
+        </section>
+    </main>
+
+    <?php
+    if (isset($_SESSION["id"]) == "admin") {
+        $request = "SELECT * FROM utilisateurs;";
+        $query = mysqli_query($bdd, $request);
+
+        $i = 0;
+
+        echo "<table>";
+
+        while ($result = mysqli_fetch_assoc($query)) {  //Loop for the field of the table from database
+            if ($i == 0) {
+                echo "<tr>";
+                foreach ($result as $key => $value) {
+                    echo "<th>$key</th>";
+                }
+                echo "</tr>";
+
+                $i++;
+            }
+
+            echo "<tr>";
+            foreach ($result as $key => $value) { //Loop for the value of the table from database
+                echo "<td>$value</td>";
+            }
+            echo "</tr>";
+        }
+
+        echo "</table>";
+        mysqli_close($bdd);
+    } else {
+        echo "vous n'êtes pas administrateur!";
+    }
+
+    ?>
+
+    <footer>
+        <a href="deconnexion.php">Retour à l'accueil</a>
+    </footer>
+
+</body>
+
+</html>

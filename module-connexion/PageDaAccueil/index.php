@@ -22,6 +22,7 @@ if (isset($_GET["message"])) {
 ?>
 <!-- Reste de votre code HTML pour la page d'accueil -->
 
+
 <body>
     <nav>
         <div id="center_button"><button onclick="location.href='connexion.php'">Log in</button></div>
@@ -29,6 +30,24 @@ if (isset($_GET["message"])) {
         <div id="center_button"><button onclick="location.href='profil.php'">Profil</button></div>
 
     </nav>
+    <!--  -->
+
+    <button onclick="startDesign()">Start Design</button>
+
+    <script>
+        function startDesign() {
+            // Redirect to the PHP page that executes the Python script
+            window.location.href = "execute_script.py";
+        }
+    </script>
+
+    <?php
+    $pythonScript = "path/to/script.py";
+    $output = exec("python " . $pythonScript);
+
+    echo "Python script output: " . $output;
+
+    ?>
     <h2>Abeilles</h2>
     <p>
         Une abeille est un insecte de l'ordre des hyménoptères, appartenant à la famille des Apidae. Les abeilles sont connues pour leur rôle essentiel dans la pollinisation des plantes. Elles sont généralement de petite taille, avec un corps divisé en trois parties distinctes : la tête, le thorax et l'abdomen. Elles ont six pattes, deux paires d'ailes membraneuses et une paire d'antennes.
@@ -42,19 +61,7 @@ if (isset($_GET["message"])) {
     <button id="drawButton">Draw</button>
     <div id="drawResult"></div>
 
-    <script>
-        $(document).ready(function() {
-            $('#drawButton').click(function() {
-                $.ajax({
-                    url: '/draw',
-                    type: 'GET',
-                    success: function(response) {
-                        $('#drawResult').text(response.result);
-                    }
-                });
-            });
-        });
-    </script>
+
 </body>
 
 </html>

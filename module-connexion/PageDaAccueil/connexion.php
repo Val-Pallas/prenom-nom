@@ -1,80 +1,136 @@
 <?php
-session_start();
+$bdd = mysqli_connect("localhost", "root", "", "moduleconnexion"); // Connexion database...
 
-// Connexion à la base de données
-$serveur = "localhost";
-$utilisateur = "root";
-$motDePasse = "root";
-$baseDeDonnees = "moduleconnexion";
+if (isset($_POST["submit"])) //If we press the submit button
+{
+    if (!empty($_POST["login"]) and !empty($_POST["prenom"]) and !empty($_POST["nom"]) and !empty($_POST["password"]) and !empty($_POST["password2"]))  //If every value are not empty
+    {
 
-$connexion = mysqli_connect($serveur, $utilisateur, $motDePasse, $baseDeDonnees);
+        $login = htmlspecialchars($_POST["login"]);  //Users variable information
+        $prenom = htmlspecialchars($_POST["prenom"]);
+        $nom = htmlspecialchars($_POST["nom"]);
+        $password = ($_POST["password"]);
+        $password2 = ($_POST["password2"]);
 
-// Vérifier la connexion à la base de données
-if (!$connexion) {
-    die("La connexion à la base de données a échoué: " . mysqli_connect_error());
-}
+        $loginlenght = strlen($login); //Variable for the login lenght
 
-// Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les données du formulaire
-    $login = $_POST["login"];
-    $motDePasse = $_POST["password"];
-}
-// Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer les données du formulaire
-    $login = $_POST["login"];
-    $motDePasse = $_POST["password"];
+        if ($loginlenght <= 255) {
+            if ($password == $password2) {
 
-    // Vérifier les informations de connexion dans la base de données
-    $requete = "SELECT * FROM utilisateurs WHERE login = '$login'";
-    $resultat = mysqli_query($connexion, $requete);
+                $password3 = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 
-    if ($resultat) {
-        if (mysqli_num_rows($resultat) > 0) {
-            $utilisateur = mysqli_fetch_assoc($resultat);
-            if (password_verify($motDePasse, $utilisateur["password"])) {
-                // Les informations de connexion sont correctes, créer les variables de session
-                $_SESSION["utilisateur_id"] = $utilisateur["id"];
-                $_SESSION["utilisateur_login"] = $utilisateur["login"];
+                $sql = " INSERT INTO utilisateurs (login, prenom, nom, password) VALUES ('" . $login . "', '" . $prenom . "', '" . $nom . "', '" . $password3 . "');";
 
-                // Rediriger vers la page d'accueil ou toute autre page appropriée
-                header("Location: index.php");
-                exit();
+                if (!mysqli_query($bdd, $sql)) {
+                    die('impossible d’ajouter cet enregistrement : ' .  mysqli_error($bdd));
+                } else {
+                    header('Location:connexion.php');
+                }
             } else {
-                echo "Login ou mot de passe incorrect.";
+                $erreur = "Les mots de passe ne sont pas identique !";
             }
         } else {
-            echo "Aucun utilisateur trouvé avec ce login.";
+            $erreur = "Votre pseudo ne doit pas depasser 255 caracteres !";
         }
     } else {
-        echo "Erreur de requête: " . mysqli_error($connexion);
+        $erreur = "Tous les champs ne sont pas remplis !";
     }
 }
-
-
-
-
-    // Fermer la connexion à la base de données
-    mysqli_close($connexion);
+mysqli_close($bdd);
 
 ?>
 
+
+<!-- Debut page display -->
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-    <title>Connexion</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/inscription.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
 </head>
+
 <body>
-    <h2>Connexion</h2>
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="login">Login :</label>
-        <input type="text" id="login" name="login" required><br><br>
+    <header>
+        <nav>
+            <a href='../index.php'>Accueil</a>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="profil.php?id=" <?php $_SESSION['id'] ?>>Profil</a>
+            <?php
+            } else { ?><a href='inscription.php'>Inscription</a><?php } ?>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required><br><br>
+            <?php if (isset($_SESSION['id'])) { ?>
+                <a href="deconnexion.php">Deconnexion</a>
+            <?php } else { ?>
+                <a href="connexion.php">Connexion</a>
+            <?php } ?>
+        </nav>
+    </header>
 
-        <input type="submit" value="Se connecter">
-    </form>
+    <main>
+
+        <section class="flex-container">
+            <!--Debut form -->
+            <form method="post" action="">
+                <article class="story">
+                    <h1>Inscrivez-vous !</h1>
+                    <p>Decouvrez avec Totoro le studio GHIBLI ...</p>
+                </article>
+                <fieldset>
+                    <div class="formflex">
+                        <label for="login">LOGIN</label>
+                        <input type="text" name="login" id="login" placeholder="Votre login">
+                    </div>
+
+                    <div class="formflex">
+                        <label for="prenom">PRENOM</label>
+                        <input type="text" name="prenom" id="prenom" placeholder="Votre prenom">
+                    </div>
+
+                    <div class="formflex">
+                        <label for="nom">NOM</label>
+                        <input type="text" name="nom" id="nom" placeholder="Votre nom">
+                    </div>
+
+                    <div class="formflex">
+                        <label for="password">MOT DE PASSE</label>
+                        <input type="password" name="password" id="password" placeholder="Votre mot de passe">
+                    </div>
+
+                    <div class="formflex">
+                        <label for="password2">CONFIRMATION DU MOT DE PASSE</label>
+                        <input type="password" name="password2" id="password2" placeholder="Confirmation">
+                    </div>
+
+                    <div class="formflex">
+                        <input type="submit" name="submit" value="JE M'INSCRIS">
+                    </div>
+                    <div class="php">
+                        <p>
+                            <?php
+                            if (isset($erreur)) {
+                                echo $erreur;
+                            }
+                            ?>
+                        </p>
+                    </div>
+                </fieldset>
+            </form>
+            <!--End form -->
+
+            <img src="https://media.giphy.com/media/BOPrq7m5jYS1W/giphy.gif" alt="totorro" class="totoro">
+
+        </section>
+    </main>
+
+    <footer>
+        <p></p>
+    </footer>
+
 </body>
+
 </html>
+
+<!--End page display -->

@@ -1,0 +1,65 @@
+/* header */
+body
+{
+ margin: auto;
+ height: 100vh;
+ background-image: url(../images/ciel.jpg);
+ background-repeat: no-repeat;
+ background-size: cover;
+ font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+
+}
+
+nav
+{
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+opacity: 0.8;
+font-weight: bold;
+}
+
+h1
+{
+    font-size: 30px;
+}
+a
+{
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover
+{
+background-color: #DED7CB;
+}
+
+/* Main */
+
+.image
+{
+    display: flex;
+    flex-direction: row;  
+    justify-content: flex-end;
+    padding: 10px;
+
+}
+
+.gif-container
+{
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between;  
+}
+
+.totoro
+{
+    max-width: 65%;
+}
+.avion
+{
+    max-width: 21%;
+
+}

@@ -1,0 +1,144 @@
+/* header */
+body
+{
+ margin: auto;
+ height: 100vh;
+ background-image: url(../images/inscri.jpg);
+ background-repeat: no-repeat;
+ background-size: cover;
+ font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+
+}
+
+nav
+{
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+opacity: 0.8;
+font-weight: bold;
+}
+
+h1
+{
+    font-size: 30px;
+}
+a
+{
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover
+{
+background-color: black;
+}
+/* Form */
+
+
+form
+{
+    width: 70%;
+    font-weight: bold;
+    padding: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+
+}
+.formflex
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    
+
+}
+
+fieldset
+{
+    border: none;
+    border : 1px solid black;
+}
+
+
+input
+{
+    border: none;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+input::placeholder 
+{
+    color: #e4dfd1;
+    font-size: 10px;
+    font-weight: bold;
+
+}
+
+  input[type='submit'] 
+{
+    border: none;
+    padding: 10px;
+    color: rgb(50, 160, 204);
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-weight: bold; 
+    border : 1px solid black;
+
+}
+
+.php
+{
+    color: rgb(35, 114, 145);
+    text-align: center;
+}
+label
+{
+    padding: 5px;
+    color: #C2B8A8;
+}
+
+/* Main */
+h1, h2
+{
+    text-align: center;
+}
+.monoke-container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 30px;
+}
+.monoke-container img
+{
+    max-width: 28%;
+}
+
+.ghiblistory
+{
+    color: rgb(214, 214, 214);
+    text-align: justify;
+    padding: 20px;
+}
+.ghiblistory h3, .ghiblistory h4
+{
+ text-align: center;
+ color: white;
+}
+span
+{
+    color: rgb(16, 78, 170);
+    text-decoration: underline;
+}

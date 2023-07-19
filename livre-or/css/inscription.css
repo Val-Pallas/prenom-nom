@@ -1,0 +1,119 @@
+/* header */
+body
+{
+ margin: 0;
+ height: 100vh;
+ background-image: url(../images/abeillechic.jpg);
+ background-repeat: no-repeat;
+ background-size: cover;
+ font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+nav
+{
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+opacity: 0.8;
+font-weight: bold;
+}
+
+h1
+{
+    font-size: 30px;
+}
+a
+{
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover
+{
+background-color: black;
+}
+
+/* Form */
+
+form
+{
+    width: 50%;
+    font-weight: bold;
+    background-color: white;
+    -webkit-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+    -moz-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+     box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+
+}
+.formflex
+{
+    
+    padding: 25px;
+    color: white;
+
+}
+
+fieldset
+{
+    margin: 30px;
+    border: none;
+    border : 1px solid black;
+
+}
+
+
+input
+{
+    border: none;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: white;
+    text-align: center;
+}
+
+input::placeholder 
+{
+    color: #e4dfd1;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+  input[type='submit'] 
+{
+    background-color: white;
+    border: none;
+    padding: 10px;
+    color: rgb(50, 160, 204);
+    border : 1px solid black;
+    font-weight: bold; 
+
+}
+
+.php
+{
+    color: rgb(35, 114, 145);
+    text-align: center;
+    font-size: 12px;
+}
+label
+{
+    padding: 5px;
+    color: #C2B8A8;
+}
+
+/* Main-Section */
+
+.flex-container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;  
+    align-items: center;
+}
+.story
+{
+    padding: 30px;
+}

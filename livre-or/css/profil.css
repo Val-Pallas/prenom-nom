@@ -1,0 +1,110 @@
+body {
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+}
+header {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   
+    background: rgb(231 202 36 / 50%);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    text-decoration: underline;
+    
+}
+h1 {
+    margin: 20px;
+    margin-right: 15px;
+}
+h2{
+    color: #333;
+}
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    
+    text-align: -webkit-center;
+    
+}
+
+form    {
+        width: 70%;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+        font-weight: bold;
+        padding: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        
+        -webkit-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+        -moz-box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+        box-shadow: 0px 3px 12px 0px rgba(0,0,0,0.42);
+
+    }
+    .formflex
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        text-align: center;
+        padding: 10px;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+        color: white;
+        
+
+    }
+            label, input {
+    display: block;
+    margin-bottom: 10px;
+}
+input
+    {
+        border: none;
+        background: none;
+        border-radius: 5px;
+        border: 1px solid white;
+        background-color: white;
+        padding: 5px;
+        font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+        text-align: center;
+    }
+    
+a{
+    text-decoration: none;
+}
+a:hover
+{
+background-color: black;
+}
+.error-message {
+    color: red;
+}
+#myVideo {
+position:relative;
+right: 20;
+bottom: 30;
+min-width: 50%;
+min-height: 50%;
+}
+.content {
+display: flex;
+position: fixed;
+top: 0;
+color: #f1f1f1;
+width: 100%;
+flex-direction: column;
+}
+.abeille-container {
+        max-width: 10%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 30px;
+        text-align: -webkit-center;
+    }

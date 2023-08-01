@@ -130,7 +130,6 @@ width: 100%;
         <h2>Bienvenue!</h2>
         <a href="inscription.php">Inscription</a>
         <a href="connexion.php">Connexion</a>
-        <a href="commentaires.php">Commentaire</a>
         <img class=abeille-container src="../images/abeillechic.jpg" alt="image abeille"> 
 
     </main>

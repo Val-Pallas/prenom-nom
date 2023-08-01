@@ -134,11 +134,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         a {
-            text-decoration: none;
+            display: flex;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+            color: black;
+            padding: 10px;
+            text-align: center;
         }
 
         a:hover {
-            background-color: black;
+            background-color: #f1f1f1;
         }
 
         .error-message {
@@ -157,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             position: fixed;
             top: 0;
             background: rgb(231 202 36 / 50%);
-            color: #f1f1f1;
+            color: black;
             width: 100%;
         }
 
@@ -182,14 +187,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php } ?>
 
         <div>
-            <!-- Votre formulaire de modification existant ici -->
-
-            <!-- Formulaire pour le commentaire -->
-            <form method="POST" action="enregistrer_commentaire.php">
-                <textarea name="commentaire" placeholder="Votre commentaire ici"></textarea>
-                <br>
-                <input type="submit" name="submit" value="Envoyer">
-            </form>
             <form class="formulaire" action="profil.php" method="post">
             <ul>
                 <br />
@@ -207,11 +204,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <br />
                    <input type="submit" name="valider" value="Valider &#10004;" />
                     <a href="deconnexion.php">Deconnexion</a>
-                    <br />
                     <br>
+                    <a href="livre-or.php">Livre d'or</a>
                     <br>
-            <a href="livre-or.php">Livre d'or</a>
+                    <a href="commentaires.php">Commentaire</a>
+                    <br>
             </ul>
+
         </form>
         </div>
        

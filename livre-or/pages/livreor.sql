@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:8889
--- Généré le : mer. 19 juil. 2023 à 13:49
--- Version du serveur : 5.7.39
--- Version de PHP : 7.4.33
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jun 14, 2023 at 02:38 PM
+-- Server version: 8.0.33
+-- PHP Version: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,65 +18,57 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `livreor`
+-- Database: `livreor`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commentaires`
+-- Table structure for table `commentaires`
 --
 
-CREATE TABLE `commentaires` (
-  `id` int(11) NOT NULL,
-  `commentaire` text NOT NULL,
-  `id_utilisateur` int(11) NOT NULL,
-  `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `commentaires`;
+CREATE TABLE IF NOT EXISTS `commentaires` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `commentaire` varchar(255) NOT NULL,
+  `id_utilisateur` int NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `commentaires`
+--
+
+INSERT INTO `commentaires` (`id`, `commentaire`, `id_utilisateur`, `date`) VALUES
+(1, 'YESSSSSSSSSS', 3, '2023-06-14'),
+(2, 'LETSS GOOOO!', 2, '2023-06-14'),
+(3, 'YOOOOOOO!', 1, '2023-06-14'),
+(4, 'WOOHOOO!', 4, '2023-06-14');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Table structure for table `utilisateurs`
 --
 
-CREATE TABLE `utilisateurs` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `utilisateurs`;
+CREATE TABLE IF NOT EXISTS `utilisateurs` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `login` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Index pour les tables déchargées
+-- Dumping data for table `utilisateurs`
 --
 
---
--- Index pour la table `commentaires`
---
-ALTER TABLE `commentaires`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `commentaires`
---
-ALTER TABLE `commentaires`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `utilisateurs`
---
-ALTER TABLE `utilisateurs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+INSERT INTO `utilisateurs` (`id`, `login`, `password`) VALUES
+(1, 'viktor', 'viktor'),
+(2, 'aicha', 'aicha'),
+(3, 'admin', 'admin'),
+(4, 'olha', 'olha');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

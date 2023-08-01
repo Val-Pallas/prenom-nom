@@ -1,49 +1,41 @@
 <?php
-session_start();
+session_start(); //Session connexion
+$bdd = new PDO('mysql:host=localhost;dbname=livreor;charset=utf8', 'root', 'root'); //Database connexion
 
-// Afficher les erreurs PDO
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+if(isset($_SESSION["id"]))
+{
+    $req = $bdd->prepare("SELECT * FROM utilisateurs WHERE id = ? ");
+    $req->execute(array($_SESSION["id"]));
+    $userinfo = $req->fetch();
 
+    if(isset($_POST["submit"]))
+    {
+        if(!empty($_POST["description"]) AND isset($_POST["description"]))
+        {
+            $id_utilisateur = $userinfo["id"];
+            $description= htmlspecialchars($_POST["description"]);
+            $date=date('Y-m-d h:i:s');
 
-$bdd = new PDO('mysql:host=localhost;dbname=livreor;charset=utf8', 'root', 'root'); //Database connexion`
-
-if(isset($_POST['submit'])) {
-    if(isset($_POST['login']) && isset($_POST['password'])) {
-        $login = $_POST['login'];
-        $password = $_POST['password'];
-
-
-        if (isset($_POST['login']) && isset($_POST['password']) == 'admin') {
-            $_SESSION['admin'] = 'admin';
-            header("Location: admin.php");
-            }
-        $requser = $bdd->prepare("SELECT * FROM utilisateurs WHERE login = ? AND password = ?");
-        $requser->execute(array($login, $password));
-        $userexist = $requser->rowCount();
-
-        if($userexist == 1) {
-            $userinfo = $requser->fetch();
-            $_SESSION['id'] = $userinfo['id'];
-            $_SESSION['login'] = $userinfo['login'];
-            $_SESSION['password'] = $userinfo['password'];
-            header("Location: profil.php?id=".$_SESSION['id']);
-            exit();
-        } else {
-            $error = "Identifiant ou mot de passe incorrect.";
+            $req = $bdd->prepare('INSERT INTO commentaires (commentaire, id_utilisateur, date) VALUES (?,?,?)');
+            $req->execute(array( $description, $id_utilisateur,$date));
+            $error ="Vous avez bien commenté";
+        }
+        else
+        {
+            $error ="Vous n'avez pas laissez de commentaires";
         }
     }
 }
 
 ?>
+
+<!--Debut Display-->
+
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <video autoplay muted loop id="myVideo">
-  <source src="../images/beelavanda.mp4" type="video/mp4">
-</video>
-    <title>Connexion</title>
+    <meta charset="UTF-8">
+    <title>Commentaires</title>
     <style>
         body {
             font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
@@ -53,13 +45,13 @@ if(isset($_POST['submit'])) {
         }
         header {
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-           
+
             background: rgb(231 202 36 / 50%);
             color: #fff;
             padding: 20px;
             text-align: center;
             text-decoration: underline;
-            
+
         }
         h1 {
             margin: 20px;
@@ -75,11 +67,11 @@ if(isset($_POST['submit'])) {
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            
+
             text-align: -webkit-center;
-            
+
         }
-        
+
         form    {
                 width: 70%;
                 font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
@@ -103,7 +95,7 @@ if(isset($_POST['submit'])) {
                 padding: 10px;
                 font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
                 color: white;
-                
+
 
             }
                     label, input {
@@ -121,7 +113,7 @@ if(isset($_POST['submit'])) {
                 font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
                 text-align: center;
             }
-            
+
         a{
             text-decoration: none;
         }
@@ -157,23 +149,50 @@ if(isset($_POST['submit'])) {
     </style>
 </head>
 <body>
-<div class="content">
-    <header>
-        <h1>Connexion</h1>
-    </header>
-    <main>
-        <h2>Entrez vos informations de connexion :</h2>
-        <form method="POST" action="commentaire.php">
-            <input type="commentaire" name="commentaire" placeholder="Ecrivez ici" />
-            
-            <br /><br />
-           <a href="profil.php"><input type="submit" name="submit" value="Enregistrer" /></a> 
-         </form>
-         <?php
-         if(isset($erreur)) {
-            echo '<font color="red">'.$erreur."</font>";
-         }
-         ?>
-         <img class=abeille-container src="../images/abeillechic.jpg" alt="image abeille"> 
+<header>
+</header>
+<main>
+    <article>
+        <!--Debut form -->
+        <form method="post" action="">
+            <h1>Laissez-nous votre Commentaire!</h1>
+            <div class="formflex">
+                <div>
+                    <!--<label for="description">Commentaires</label>-->
+                    <textarea id="description" name="description" rows="8" cols="60" placeholder="Ecris !"  minlength="3" maxlength="255" ></textarea>
+                </div>
+
+                <input type="submit" name="submit" value="Commentes !">
+            </div>
+            <?php
+            if(isset($error))
+            {
+                echo $error;
+            }
+            ?>
+        </form>
+        <!--End form -->
+    </article>
+</main>
+<footer>
+    <nav class="nav">
+
+        <!--Nav PHP-->
+        <a href='livre-or.php'>Livre d'or</a>
+        <?php if (isset($_SESSION['id'])) { ?>
+            <a href="profil.php?id=" <?php $_SESSION['id'] ?>>Profil</a>
+            <a href="commentaire.php?id=" <?php $_SESSION['id'] ?>>Commentaires</a>
+            <?php
+        } else { ?><a href="inscription.php">Inscription</a><?php } ?>
+
+        <?php if (isset($_SESSION['id'])) { ?>
+            <a href="deconnexion.php">Deconnexion</a>
+        <?php } else { ?>
+            <a href="connexion.php">Connexion</a>
+        <?php } ?>
+        <!--Nav PHP-->
+
+    </nav>
+</footer>
 </body>
 </html>
